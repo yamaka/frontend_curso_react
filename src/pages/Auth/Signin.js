@@ -41,7 +41,14 @@ export const Signin = () => {
     console.log("login!!!! data>>> ", data);
     setSuccedLogin(true);
     setTimeout(() => {
+        localStorage.setItem('IS_LOGGED_IN', 'true');
+        const user = {
+          username: data.username,
+          email: data.email,
+          isLoggedIn: true
+        };
 
+        localStorage.setItem("USER", JSON.stringify(user));
         setAuthStateContext({
             ...authStateContext,
             ...{

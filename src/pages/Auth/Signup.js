@@ -45,7 +45,7 @@ export const Signup = () => {
               console.log("register!!!! data>>> ", data);
               setSuccedRegister(true)
               setTimeout(()=>{
-                history.push("/")
+                history.push("/signin")
               },2000)
               //TODO trabjar el logueo en la interdaz "header"
             }

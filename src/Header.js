@@ -1,17 +1,29 @@
-import React, {useContext} from 'react'
+import React, { useContext } from "react";
 
 import { BrowserRouter as Router, Link } from "react-router-dom";
 
-import {Cart} from './components/Cart/Cart'
-import {AuthContext} from './context/AuthContext';
+import { Cart } from "./components/Cart/Cart";
+import { AuthContext } from "./context/AuthContext";
 
+const Header = (props) => {
+  debugger;
 
- const Header  = (props) => {
-   debugger;
-
-   const [authStateContext, setAuthStateContext] = useContext(AuthContext)
+  const [authStateContext, setAuthStateContext, logoutContext] = useContext(
+    AuthContext
+  );
   const { counterCart } = props;
-	return (
+
+  
+  const logout = () => {
+    //window.location.reload();
+    logoutContext();
+    /* setAuthStateContext({
+      username: "",
+      email: "",
+      isLoggedIn: false,
+    }); */
+  };
+  return (
     <nav class="flex items-center justify-between flex-wrap bg-teal p-6">
       <div class="flex items-center flex-no-shrink text-white mr-6">
         <Link to="/">
@@ -66,18 +78,17 @@ import {AuthContext} from './context/AuthContext';
 
         {/* login logic header */}
 
-        <div>
+        <div className="relative">
           {!authStateContext.isLoggedIn && (
             <>
-              
-                <Link
-                  to="signin"
-                  class="inline-block text-sm px-4 py-2 leading-none border rounded  border-white hover:border-transparent hover:text-teal hover:text-white mt-4 lg:mt-0"
-                >
-                  {" "}
-                  Signin
-                </Link>
-             
+              <Link
+                to="signin"
+                class="inline-block text-sm px-4 py-2 leading-none border rounded  border-white hover:border-transparent hover:text-teal hover:text-white mt-4 lg:mt-0"
+              >
+                {" "}
+                Signin
+              </Link>
+
               <Link
                 to="signup"
                 class="inline-block text-sm px-4 py-2 leading-none border rounded  border-white hover:border-transparent hover:text-teal hover:text-white mt-4 lg:mt-0"
@@ -87,17 +98,32 @@ import {AuthContext} from './context/AuthContext';
             </>
           )}
           {authStateContext.isLoggedIn && (
-            <a
-              href="#"
-              class="inline-block text-sm px-4 py-2 leading-none border rounded  border-white hover:border-transparent hover:text-teal hover:text-white mt-4 lg:mt-0"
-            >
-              {authStateContext.username}
-            </a>
+            <>
+              <a
+                href="#"
+                class="inline-block text-sm px-4 py-2 leading-none border rounded  border-white hover:border-transparent hover:text-teal hover:text-white mt-4 lg:mt-0"
+              >
+                {authStateContext.username}
+              </a>
+              <div>
+                <span className="m-2 font-semibold text-base">Correo</span>
+                <a 
+                  href="javascript:void(0)"
+                  onClick={() => {
+                    logout();
+                  }}
+                >
+                  <span className="m-2 font-semibold text-base text-blue-500">
+                    Cerrar Session
+                  </span>
+                </a>
+              </div>
+            </>
           )}
         </div>
       </div>
     </nav>
   );
-}
+};
 
 export default Header;
