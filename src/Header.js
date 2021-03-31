@@ -5,6 +5,9 @@ import { BrowserRouter as Router, Link } from "react-router-dom";
 import { Cart } from "./components/Cart/Cart";
 import { AuthContext } from "./context/AuthContext";
 
+
+
+
 const Header = (props) => {
   debugger;
 

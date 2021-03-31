@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import GoogleLogin from "react-google-login";
 
 import "./Login.css";
 import {AuthContext} from "../../context/AuthContext";
@@ -15,10 +16,15 @@ export const Signin = () => {
     password: "",
   });
   const [succedLogin, setSuccedLogin] = useState(false);
+  const [fromGoogle, setFromGoogle] = useState(false);
 
   //const {username, email, password, confirmPassword} = signupForm;
 
-  
+  useEffect(() => {
+    if (fromGoogle) {
+      login();
+    }
+  }, [fromGoogle]);
 
   const updateSignupFormProperty = (key, value) => {
     console.log(key, value);
@@ -29,10 +35,12 @@ export const Signin = () => {
   };
 
   const login = async () => {
+    debugger;
     const { username, password } = signupForm;
     const params = {
       username,
       password,
+      fromGoogle
     };
     
     const response = await axios.post(WEB_ROOT, params);
@@ -62,6 +70,18 @@ export const Signin = () => {
     //TODO trabjar el logueo en la interdaz "header"
     }
   }
+
+  const responseGoogle = (response) => {
+    console.log("login google", response);
+    const username = response.profileObj.name;
+  
+    setSignupForm({
+      ...signupForm,
+      ...{ username },
+    });
+
+    setFromGoogle(true);
+  };
   
   if (succedLogin){
     return (
@@ -70,6 +90,8 @@ export const Signin = () => {
       </div>
     );
   }
+
+  
 
   return (
     <div className="bg-grey-lighter min-h-screen flex flex-col">
@@ -87,7 +109,6 @@ export const Signin = () => {
             }
           />
 
-          
           <input
             type="password"
             className="block border border-grey-light w-full p-3 rounded mb-4"
@@ -125,15 +146,15 @@ export const Signin = () => {
           </div>
         </div>
 
-        <div className="text-grey-dark mt-6">
-          Already have an account?
-          <a
-            className="no-underline border-b border-blue text-blue"
-            href="../login/"
-          >
-            Log in
-          </a>
-          .
+        <div className=" flex flex-col items-center text-grey-dark mt-6">
+          <div>Hazlo con google o facebook</div>
+          <GoogleLogin
+            clientId="585612183624-ro55sv0ggkclm8a31tvqlfsfe21j19au.apps.googleusercontent.com"
+            buttonText="Login"
+            onSuccess={responseGoogle}
+            onFailure={responseGoogle}
+            cookiePolicy={"single_host_origin"}
+          />
         </div>
       </div>
     </div>

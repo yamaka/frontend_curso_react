@@ -3,6 +3,9 @@ import React, {useState, useEffect} from "react";
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 
+import GoogleLogin from "react-google-login";
+import createHash from "hash-generator"
+
 import "./Login.css"
 
 
@@ -16,12 +19,20 @@ export const Signup = () => {
         confirmPassword: ''
     })
     const [succedRegister, setSuccedRegister] = useState(false);
+    const [fromGoogle, setFromGoogle] = useState(false);
 
     //const {username, email, password, confirmPassword} = signupForm;
 
     useEffect(()=>{
         verifyConfirmPassword()
     },[signupForm.confirmPassword])
+
+
+    useEffect(()=>{
+      if(fromGoogle){
+        register();
+      }
+    },[fromGoogle])
 
     const updateSignupFormProperty = (key, value) =>{
         console.log(key,value)
@@ -70,7 +81,25 @@ export const Signup = () => {
         </div>)
     }
 
+    const handleSubmit = ()=>{
+      setFromGoogle(false);
+      register();
+    } 
 
+    const responseGoogle = (response) =>{
+      console.log("login google",response);
+      const username = response.profileObj.name;
+      const email = response.profileObj.email;
+      const hashLength = 8;
+      const password = createHash(8);
+      const  confirmPassword = password;
+      setSignupForm({
+        ...signupForm,
+        ...{ username, email, password, confirmPassword },
+      });
+
+      setFromGoogle(true);    
+    }
   return (
     <div className="bg-grey-lighter min-h-screen flex flex-col">
       <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
@@ -115,13 +144,19 @@ export const Signup = () => {
               updateSignupFormProperty("confirmPassword", e.target.value)
             }
           />
-          { !isEmptyPasswords() && !verifyConfirmPassword() && <span className=" text-red-500">Las contraseñas no coinciden!!!</span>}
-          {!isEmptyPasswords() && verifyConfirmPassword() && <span className=" text-green-500">Correcto</span>}
+          {!isEmptyPasswords() && !verifyConfirmPassword() && (
+            <span className=" text-red-500">
+              Las contraseñas no coinciden!!!
+            </span>
+          )}
+          {!isEmptyPasswords() && verifyConfirmPassword() && (
+            <span className=" text-green-500">Correcto</span>
+          )}
 
           <button
             type="submit"
             className=" bg-green-500 w-full text-center py-3 rounded text-white hover:bg-green-dark focus:outline-none my-1"
-            onClick={() => register()}
+            onClick={() => handleSubmit()}
           >
             Registro
           </button>
@@ -153,6 +188,17 @@ export const Signup = () => {
             Log in
           </a>
           .
+        </div>
+
+        <div className=" flex flex-col items-center text-grey-dark mt-6">
+          <div>Hazlo con google o facebook</div>
+          <GoogleLogin
+            clientId="585612183624-ro55sv0ggkclm8a31tvqlfsfe21j19au.apps.googleusercontent.com"
+            buttonText="Login"
+            onSuccess={responseGoogle}
+            onFailure={responseGoogle}
+            cookiePolicy={"single_host_origin"}
+          />
         </div>
       </div>
     </div>
