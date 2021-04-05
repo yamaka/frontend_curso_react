@@ -9,7 +9,7 @@ import { AuthContext } from "./context/AuthContext";
 
 
 const Header = (props) => {
-  debugger;
+  
 
   const [authStateContext, setAuthStateContext, logoutContext] = useContext(
     AuthContext

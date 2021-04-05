@@ -53,18 +53,20 @@ export const Signin = () => {
         const user = {
           username: data.username,
           email: data.email,
-          isLoggedIn: true
+          isLoggedIn: true,
+          id: (data.id).toString()
         };
 
         localStorage.setItem("USER", JSON.stringify(user));
         setAuthStateContext({
-            ...authStateContext,
-            ...{
-                isLoggedIn: true, 
-                username: data.username,
-                email: data.email
-            }
-        })
+          ...authStateContext,
+          ...{
+            isLoggedIn: true,
+            username: data.username,
+            email: data.email,
+            id: data.id.toString(),
+          },
+        });
         history.push("/");
     }, 2000);
     //TODO trabjar el logueo en la interdaz "header"

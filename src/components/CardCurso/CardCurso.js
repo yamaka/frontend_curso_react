@@ -1,18 +1,21 @@
 import React, { useContext } from "react";
+import axios from "axios";
 
 //libraries
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 //components
-
+import Config from "../../Config";
 //context
-import { CursosContext } from "../../context/CursosContext";
+import { CarritoContext } from "../../context/CarritoContext";
+import { AuthContext } from "../../context/AuthContext";
 
 //styles
 import "./CardCurso.css";
 
 export const CardCurso = ({
+  id,
   titulo,
   descripcion,
   publicado,
@@ -20,7 +23,50 @@ export const CardCurso = ({
   docente = "Sarah Dayan",
   addToCart,
 }) => {
-  const [stateContext, setStateContext] = useContext(CursosContext);
+  const [
+    stateContext, 
+    setStateContext,
+    addCurso
+  ] = useContext(CarritoContext);
+
+  const [authStateContext, setAuthStateContext, logoutContext] = useContext(
+    AuthContext
+  );
+
+  const createCart = async () =>{
+    debugger
+    const {id} = authStateContext;
+    const params = {
+      userId: id,
+    };
+    try {
+      const response  = await axios.post(Config.WEB_ROOT, params)
+      debugger
+      if(response.data){
+        return response.data;
+      }
+    } catch (error) {
+      alert("error! createCart");
+    }
+  }
+
+  const handleAddCursoToCart = async () =>{
+    debugger
+    const carritoData = await createCart()
+    const params = {
+      idCurso: id,
+      idCarrito: carritoData.id
+    };
+    try {
+      const response = await axios.post(Config.WEB_ROOT, params);
+      if(response.data){
+        setStateContext({ cursosCount: stateContext.cursosCount + 1 });
+      }
+    } catch (error) {
+      alert("error! handleAddCursoToCart");
+    }
+
+  }
 
 
   return (
@@ -43,7 +89,7 @@ export const CardCurso = ({
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           onClick={() =>
-            setStateContext({ countCart: stateContext.countCart + 1 })
+           handleAddCursoToCart()
           }
         >
           <FontAwesomeIcon icon={faShoppingCart} />

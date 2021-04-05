@@ -14,7 +14,7 @@ import { Signin } from "./pages/Auth/Signin";
 import { Signup } from "./pages/Auth/Signup";
 
 //context
-import Provider from "./context/CursosContext";
+import CarritoProvider from "./context/CarritoContext";
 import AuthProvider from "./context/AuthContext";
 
 class App extends React.Component {
@@ -37,7 +37,7 @@ class App extends React.Component {
     const { counterCart } = this.state;
     return (
       <AuthProvider>
-        <Provider>
+        <CarritoProvider>
           <Router>
             <div className="App">
               <Header />
@@ -64,7 +64,7 @@ class App extends React.Component {
               </div>
             </div>
           </Router>
-        </Provider>
+        </CarritoProvider>
       </AuthProvider>
     );
   }
