@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 import { BrowserRouter as Router, Link } from "react-router-dom";
 
@@ -14,8 +14,16 @@ const Header = (props) => {
   const [authStateContext, setAuthStateContext, logoutContext] = useContext(
     AuthContext
   );
+
+  const [showCart, setShowCart] =  useState(false)
+  
   const { counterCart } = props;
 
+  useEffect(()=>{
+    setTimeout(()=>{
+      setShowCart(true)
+    })
+  },[])
   
   const logout = () => {
     //window.location.reload();
@@ -26,6 +34,8 @@ const Header = (props) => {
       isLoggedIn: false,
     }); */
   };
+
+
   return (
     <nav class="flex items-center justify-between flex-wrap bg-teal p-6">
       <div class="flex items-center flex-no-shrink text-white mr-6">
@@ -76,7 +86,10 @@ const Header = (props) => {
           >
             Blog
           </a>
-          <Cart />
+          
+          {showCart && <Cart/>}          
+
+          
         </div>
 
         {/* login logic header */}

@@ -60,6 +60,9 @@ class App extends React.Component {
                   <Route exact path="/cursos/:idCurso">
                     <Curso />
                   </Route>
+                  <Route exact path="/carrito/">
+                    <Curso />
+                  </Route>
                 </Switch>
               </div>
             </div>

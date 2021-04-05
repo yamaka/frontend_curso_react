@@ -1,4 +1,4 @@
-const WEB_ROOT = "http://localhost:8080/api/cursos";
+const WEB_ROOT = "http://localhost:8080/api";
 
 const Config = {
   WEB_ROOT: WEB_ROOT,

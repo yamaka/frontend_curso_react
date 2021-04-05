@@ -40,7 +40,7 @@ export const CardCurso = ({
       userId: id,
     };
     try {
-      const response  = await axios.post(Config.WEB_ROOT, params)
+      const response = await axios.post(`${Config.WEB_ROOT}/carrito`, params)
       debugger
       if(response.data){
         return response.data;
@@ -58,7 +58,7 @@ export const CardCurso = ({
       idCarrito: carritoData.id
     };
     try {
-      const response = await axios.post(Config.WEB_ROOT, params);
+      const response = await axios.post(`${ Config.WEB_ROOT}/carrito/add-curso`, params);
       if(response.data){
         setStateContext({ cursosCount: stateContext.cursosCount + 1 });
       }
